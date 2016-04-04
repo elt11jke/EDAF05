@@ -42,7 +42,7 @@ private void readFile(String f){
 
 private void writeFile() {
 	PrintWriter writer = null;
-	try {writer = new PrintWriter(f+"TESTOUT.txt");}
+	try {writer = new PrintWriter("src/lab2/words-"+f+"-TESTOUT.txt");}
 		catch (IOException e) {	e.printStackTrace();}
 
 	writer.println(1);
