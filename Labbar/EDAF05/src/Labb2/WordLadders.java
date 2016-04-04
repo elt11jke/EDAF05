@@ -2,6 +2,8 @@ package Labb2;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -10,6 +12,7 @@ import java.util.Scanner;
 public class WordLadders {
 private HashMap<String, LinkedList<String>> map;
 private ArrayList<String> wordList;
+private String f;
 
 
 public WordLadders(){
@@ -19,7 +22,7 @@ public WordLadders(){
 	Scanner scan = new Scanner(System.in);
 	String f = scan.next();
 	readFile(f);
-	
+	writeFile();
 }
 
 private void readFile(String f){
@@ -36,6 +39,21 @@ private void readFile(String f){
 		map.put(text, new LinkedList<String>());
 	}
 	scan.close();
+}
+
+private void writeFile() {
+	PrintWriter writer = null;
+	try {writer = new PrintWriter(f+"TESTOUT.txt");}
+		catch (IOException e) {	e.printStackTrace();}
+
+	writer.println(1);
+	writer.println(1);
+	writer.println(1);
+	writer.println(1);
+	writer.println(-1);
+	writer.println(-1);
+	
+	writer.close();
 }
 
 public void AdjacentList(){
