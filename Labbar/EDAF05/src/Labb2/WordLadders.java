@@ -13,6 +13,7 @@ public class WordLadders {
 private HashMap<String, LinkedList<String>> map;
 private ArrayList<String> wordList;
 private String f;
+PrintWriter writer;
 
 
 public WordLadders(String f){
@@ -28,7 +29,7 @@ public WordLadders(String f){
 private void readFile(String f){
 	Scanner scan = null;
 	try {
-		scan= new Scanner(new File("src/lab2/words-"+f+"-in.txt"));
+		scan= new Scanner(new File("src/lab2/words-"+f+".txt"));
 	} catch (FileNotFoundException e) {
 		e.printStackTrace();
 	}
@@ -41,8 +42,8 @@ private void readFile(String f){
 }
 
 private void writeFile() {
-	PrintWriter writer = null;
-	try {writer = new PrintWriter(f+"TESTOUT.txt");}
+	writer = null;
+	try {writer = new PrintWriter("src/lab2/words-"+f+"-TESTOUT.txt");}
 		catch (IOException e) {	e.printStackTrace();}
 
 	writer.println(1);
@@ -85,6 +86,63 @@ public void AdjacentList(){
 			}
 		}
 	}
+
+public void BFS(){
+	Scanner scan = null;
+	try {
+		scan= new Scanner(new File("src/lab2/words-"+f+"-in.txt"));
+	} catch (FileNotFoundException e) {
+		e.printStackTrace();
+	}
+	while(scan.hasNext()){
+		String line = scan.nextLine();
+		Scanner pair = new Scanner(line);
+		String start = pair.next();
+		String end = pair.next();
+		Boolean found = false;
+		int layerCounter = 0;
+		int elementId = wordList.indexOf(start);
+		Boolean[] discovered = new Boolean[Integer.parseInt(f)];
+		for(int i=0; i< discovered.length; i++){
+			if(elementId == i){
+				discovered[i]=true;
+			} else {
+				discovered[i]=false;
+			}
+		}
+		LinkedList<Integer>[] layers = (LinkedList<Integer>[]) new LinkedList[1];
+		layers[0].add(elementId);
+		
+		while(!found || layers[layerCounter].size() == 0){
+			search:
+			for(int node : layers[layerCounter]){
+				LinkedList<String> list = map.get(wordList.get(node));
+
+				for(String neighbor : list){
+					int neighborId = wordList.indexOf(neighbor);
+					if(!discovered[neighborId]){
+						layers[layerCounter+1].add(neighborId);
+						discovered[neighborId]=true;
+						if(wordList.get(neighborId).equals(end)){
+							found = true;
+							break search;
+						}
+					}
+				}				
+			}
+			layerCounter++;
+		}
+		if(found){
+			writer.println(layerCounter);
+		} else {
+			writer.println("-1");
+		}
+		layerCounter = 0;
+		found = false;
+
+	}
+	writer.close();
+}
 
 /*public Boolean compareOut(){
 	Scanner rOut = new Scanner("src/lab2/words-"+f+"-out.txt");
