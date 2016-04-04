@@ -28,7 +28,7 @@ public WordLadders(String f){
 private void readFile(String f){
 	Scanner scan = null;
 	try {
-		scan= new Scanner(new File("src/lab2/"+f+".txt"));
+		scan= new Scanner(new File("src/lab2/words-"+f+"-in.txt"));
 	} catch (FileNotFoundException e) {
 		e.printStackTrace();
 	}
@@ -87,9 +87,10 @@ public void AdjacentList(){
 		}
 	}
 
-public void printToFile(){
-	
-}
+/*public Boolean compareOut(){
+	Scanner rOut = new Scanner("src/lab2/words-"+f+"-out.txt");
+	Scanner out = 
+}*/
 
 public void distance(){
 	
