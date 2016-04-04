@@ -31,7 +31,6 @@ private void readFile(String f){
 	}
 	while (scan.hasNext()) {
 		String text = scan.nextLine();
-		//kommentar
 		wordList.add(text);
 		map.put(text, new LinkedList<String>());
 	}
@@ -79,5 +78,6 @@ public void distance(){
 
 public static void main(String[] args) {
 	WordLadders w = new WordLadders();
+	
 }
 }
