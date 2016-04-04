@@ -15,12 +15,12 @@ private ArrayList<String> wordList;
 private String f;
 
 
-public WordLadders(){
-	map = new HashMap<String, LinkedList<String>>();
+public WordLadders(String f){
+	/*map = new HashMap<String, LinkedList<String>>();
 	wordList = new ArrayList<String>();
 	System.out.println("Skriv in en fil:");
-	Scanner scan = new Scanner(System.in);
-	String f = scan.next();
+	Scanner scan = new Scanner(System.in);*/
+	this.f = f;
 	readFile(f);
 	writeFile();
 }
@@ -95,7 +95,7 @@ public void distance(){
 	
 }
 
-public static void main(String[] args) {
+/*public static void main(String[] args) {
 	WordLadders w = new WordLadders();
-}
+}*/
 }
