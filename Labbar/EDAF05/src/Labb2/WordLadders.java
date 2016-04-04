@@ -34,7 +34,6 @@ private void readFile(String f){
 	}
 	while (scan.hasNext()) {
 		String text = scan.nextLine();
-		//kommentar
 		wordList.add(text);
 		map.put(text, new LinkedList<String>());
 	}
