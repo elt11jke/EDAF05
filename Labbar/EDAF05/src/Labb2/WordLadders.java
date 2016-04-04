@@ -22,14 +22,17 @@ public WordLadders(String f){
 	System.out.println("Skriv in en fil:");
 	Scanner scan = new Scanner(System.in);*/
 	this.f = f;
+	wordList = new ArrayList<String>();
+	map = new HashMap<String, LinkedList<String>>();
 	readFile(f);
-	writeFile();
+	AdjacentList();
+	BFS();
 }
 
 private void readFile(String f){
 	Scanner scan = null;
 	try {
-		scan= new Scanner(new File("src/lab2/words-"+f+".txt"));
+		scan= new Scanner(new File("src/Labb2/words-"+f+".txt"));
 	} catch (FileNotFoundException e) {
 		e.printStackTrace();
 	}
@@ -41,20 +44,6 @@ private void readFile(String f){
 	scan.close();
 }
 
-private void writeFile() {
-	writer = null;
-	try {writer = new PrintWriter("src/lab2/words-"+f+"-TESTOUT.txt");}
-		catch (IOException e) {	e.printStackTrace();}
-
-	writer.println(1);
-	writer.println(1);
-	writer.println(1);
-	writer.println(1);
-	writer.println(-1);
-	writer.println(-1);
-	
-	writer.close();
-}
 
 public void AdjacentList(){
 	for (int i = 0; i < wordList.size(); i++){
@@ -90,16 +79,26 @@ public void AdjacentList(){
 public void BFS(){
 	Scanner scan = null;
 	try {
-		scan= new Scanner(new File("src/lab2/words-"+f+"-in.txt"));
+		writer = new PrintWriter("src/Labb2/words-"+f+"-TESTOUT.txt");
+	} catch (FileNotFoundException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+	try {
+		scan= new Scanner(new File("src/Labb2/words-"+f+"-in.txt"));
 	} catch (FileNotFoundException e) {
 		e.printStackTrace();
 	}
 	while(scan.hasNext()){
+		//System.out.println("start compare");
 		String line = scan.nextLine();
 		Scanner pair = new Scanner(line);
 		String start = pair.next();
 		String end = pair.next();
 		Boolean found = false;
+		if(start.equals(end)){
+			found=true;
+		}
 		int layerCounter = 0;
 		int elementId = wordList.indexOf(start);
 		Boolean[] discovered = new Boolean[Integer.parseInt(f)];
@@ -110,17 +109,25 @@ public void BFS(){
 				discovered[i]=false;
 			}
 		}
-		LinkedList<Integer>[] layers = (LinkedList<Integer>[]) new LinkedList[1];
+		LinkedList<Integer>[] layers = (LinkedList<Integer>[]) new LinkedList[wordList.size()];
+		layers[0] = new LinkedList<Integer>();
 		layers[0].add(elementId);
 		
-		while(!found || layers[layerCounter].size() == 0){
+		while(!found && layers[layerCounter].size() > 0){
+			//System.out.println("enter" + layerCounter);
+			layers[layerCounter+1] = new LinkedList<Integer>();
 			search:
 			for(int node : layers[layerCounter]){
+				//System.out.println("forenter");
 				LinkedList<String> list = map.get(wordList.get(node));
 
 				for(String neighbor : list){
+					//System.out.println("neighbor"+neighbor);
 					int neighborId = wordList.indexOf(neighbor);
 					if(!discovered[neighborId]){
+						/*if(layers[layerCounter+1] == null){
+							layers[layerCounter+1] = new LinkedList<Integer>();
+						}*/
 						layers[layerCounter+1].add(neighborId);
 						discovered[neighborId]=true;
 						if(wordList.get(neighborId).equals(end)){
