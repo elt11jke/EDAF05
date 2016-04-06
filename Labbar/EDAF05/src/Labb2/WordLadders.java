@@ -156,10 +156,6 @@ public void BFS(){
 	Scanner out = 
 }*/
 
-public void distance(){
-	
-}
-
 /*public static void main(String[] args) {
 	WordLadders w = new WordLadders();
 }*/
