@@ -2,14 +2,8 @@ package Labb3;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Scanner;
 
 public class SpanningUSA {
@@ -28,7 +22,7 @@ public class SpanningUSA {
 		while (scan.hasNext()) {
 			String line = scan.nextLine();
 			if (!line.contains("--")) {
-				list.put(line, new LinkedList<Edge>());
+				list.put(line.trim(), new LinkedList<Edge>());
 			}
 			if (line.contains("--")) {
 				String[] splitCities = line.split("--");
