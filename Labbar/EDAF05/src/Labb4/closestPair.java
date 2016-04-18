@@ -36,7 +36,7 @@ public class closestPair {
 		}
 	}
 	
-	private double findClosest(List<Point> xList){
+	private double findClosest(){
 		
 		
 	}
