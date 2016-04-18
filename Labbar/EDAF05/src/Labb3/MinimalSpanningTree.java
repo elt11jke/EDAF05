@@ -107,12 +107,14 @@ public class MinimalSpanningTree {
 			while(mstSet[n] == 0){ // Loop through all nodes of the MST
 				while(list.get(id[n]).size()>0) {
 					e = list.get(id[n]).peek();
+					System.out.println(e.target+" "+e.weight);
 					if (newConnect(e)){
 						break;
 					} else { list.get(id[n]).poll(); }
 				}
 				if(e.compareTo(eTemp) == -1){
 					eTemp = e;
+					System.out.println(eTemp.target);
 					connectId = n;
 				}	
 				n++;
