@@ -3,8 +3,10 @@ package Labb4;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.List;
 import java.util.Scanner;
+
+
 public class closestPair {
 
 	private ArrayList<Point> pointlist = new ArrayList<Point>();
@@ -34,7 +36,10 @@ public class closestPair {
 		}
 	}
 	
-	
+	private double findClosest(List<Point> xList){
+		
+		
+	}
 
 	private class Point {
 		public String id;
