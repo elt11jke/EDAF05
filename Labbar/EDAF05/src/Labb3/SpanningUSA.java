@@ -14,7 +14,7 @@ public class SpanningUSA {
 	private int[] mstSet;
 	private LinkedList<Edge> resSet;
 	private static int distance;
-	private int size;
+	private static int size;
 	private String beginStr;
 	
 	public void readfile(String filename) {
@@ -85,7 +85,8 @@ public class SpanningUSA {
 		su.prim();
 		long end = System.currentTimeMillis();
 		System.out.println(distance);
-		System.out.println("Executed in " + (end - start) + " ms");
+		System.out.println("Executed in " + (end - start) + " ms. \n\nExpected time:\nn squared : " + size*size +"\nnlogm: " + size*Math.log(size*size));
+		
 	}
 	
 	public void prim(){

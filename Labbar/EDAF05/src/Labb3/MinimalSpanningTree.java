@@ -17,6 +17,7 @@ public class MinimalSpanningTree {
 	private static int distance;
 	private static int size;
 	private String beginStr;
+	private static int steps;
 	
 	public void readfile(String filename) {
 		File f = new File(filename);
@@ -28,6 +29,7 @@ public class MinimalSpanningTree {
 		}
 		size = 0;
 		while (scan.hasNext()) {
+			steps++;
 			String line = scan.nextLine();
 			if (!line.contains("--")) {
 				size++;
@@ -79,6 +81,7 @@ public class MinimalSpanningTree {
 		scan.close();
 	}
 	public static void main(String[] args) {
+		steps=0;
 		MinimalSpanningTree su = new MinimalSpanningTree();
 		//su.readfile("src/Labb3/tinyEWG-alpha.txt");
 		long start = System.currentTimeMillis();
@@ -86,7 +89,6 @@ public class MinimalSpanningTree {
 		su.prim();
 		long end = System.currentTimeMillis();
 		System.out.println(distance);
-		System.out.println("Executed in " + (end - start) + " ms. Expected speed " + size*Math.log(size*size));
 	}
 	
 	public void prim(){
@@ -109,6 +111,7 @@ public class MinimalSpanningTree {
 			Edge e = new Edge(null, null, Integer.MAX_VALUE);
 			while(mstSet[n] == 0){ // Loop through all nodes of the MST
 				while(list.get(id[n]).size()>0) {
+					steps++;
 					e = list.get(id[n]).peek();
 					System.out.println(e.target+" "+e.weight);
 					if (newConnect(e)){
@@ -132,6 +135,7 @@ public class MinimalSpanningTree {
 		}
 		int w = 0;
 		for(Edge e : resSet){
+			steps++;
 			w+=e.weight;
 			System.out.println(e.source + " - - " + e.target + " : weight = " + e.weight);
 		}

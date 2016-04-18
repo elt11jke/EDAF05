@@ -13,7 +13,8 @@ public class closestPair {
 
 	private ArrayList<Point> pointlist = new ArrayList<Point>();
 	private ArrayList<Double> xList = new ArrayList<Double>();
-	private int recCount;
+	private static int stepNbr;
+	private double distance;
 	
 	public void readFile(File file){
 		Scanner scan = null;
@@ -40,17 +41,7 @@ public class closestPair {
 			}
 
 		}
-		//STARTTEST
-		/*for(Point p : pointlist) {
-			System.out.print(p.x+" ");
-		}
-		System.out.println("\n");
 		Collections.sort(pointlist, new MyComparator());
-		for(Point p : pointlist) {
-			System.out.print(p.x+" ");
-		}
-		System.out.println("\n");*/
-		//ENDTEST
 	}
 	
 	private void mkXList() {
@@ -60,27 +51,21 @@ public class closestPair {
 		}
 	}
 	
-	private Pair findClosest(ArrayList<Double> xS, ArrayList<Point> pS){
+	public double getDistance(){
+		return this.distance;
+	}
+	
+	private Pair findClosest(List<Double> xL2, List<Point> pL2){
 		
-		if (xS.size() <= 3){
-			return bruteForce(xS,pS);
+		if (xL2.size() <= 3){
+			return bruteForce(xL2,pL2);
 		} else {
-			ArrayList<Double> xL = new ArrayList<Double>();
-			ArrayList<Double> xR = new ArrayList<Double>();
-			ArrayList<Point> pL = new ArrayList<Point>();
-			ArrayList<Point> pR = new ArrayList<Point>();
-			
-			for(int i=0; i< xS.size(); i++){
-				if(i <=xS.size()/2){
-					xL.add(xS.get(i));
-					pL.add(pS.get(i));
-				}
-				else {
-					xR.add(xS.get(i));
-					pR.add(pS.get(i));
-				}
-			}
-			double xmid = xS.get(xS.size()/2);
+			List<Double> xL = xL2.subList(0, xL2.size()/2);
+			List<Double> xR = xL2.subList(xL2.size()/2, xL2.size());
+			List<Point> pL = pL2.subList(0, pL2.size()/2);
+			List<Point> pR = pL2.subList(pL2.size()/2, pL2.size());
+
+			double xmid = xL2.get(xL2.size()/2);
 			Pair pLeft = findClosest(xL, pL);
 			Pair pRight = findClosest(xR, pR);
 			double distMin = pRight.distance;
@@ -90,47 +75,43 @@ public class closestPair {
 				minPair = pLeft;
 			}
 			ArrayList<Point> cPoints = new ArrayList<Point>();
-			for(Point p : pS){
+			for(Point p : pL2){
+				stepNbr++;
 				if(Math.abs(xmid- p.x) < distMin){
 					cPoints.add(p);
 				}
 			}
-			System.out.println("Mergelist size " + cPoints.size()); //TODO remove
+			Collections.sort(cPoints, new YCordComparator());
 			double closest = distMin;
-			System.out.println("distmin " + distMin); //TODO remove
 			Pair closestPair = minPair;
 			
 			for(int i=0; i< cPoints.size()-1; i++) {
-				int k=i+1;
-
-				while(k < cPoints.size() && Math.abs(cPoints.get(k).y-cPoints.get(i).y) < distMin){
-					System.out.println("Merge points " + cPoints.get(k).distanceToPoint(cPoints.get(i)));
-					if (cPoints.get(k).distanceToPoint(cPoints.get(i)) < closest){
-						closest = cPoints.get(k).distanceToPoint(cPoints.get(i));
-						closestPair = new Pair(cPoints.get(k), cPoints.get(i), cPoints.get(k).distanceToPoint(cPoints.get(i)));
-						System.out.println("Closest distance after merging = " + closestPair.distance); //TODO remove
+				Point p1 = cPoints.get(i);
+				for(int j=i+1; j<cPoints.size()-2; j++) {
+					stepNbr++;
+					Point p2 = cPoints.get(j);
+					if((p2.y-p1.y) >= distMin){ break;}
+					double distance = p1.distanceToPoint(p2);
+					if(distance < closest) {
+						closestPair = new Pair(p1, p2, distance);
+						closest = distance;
 					}
-					k++;
 				}
 			}
-			
-			//System.out.println("Recursion count = " + ++recCount);
-			System.out.println("Closest distance after recursion = " + closestPair.distance + "\n\n"); //TODO remove
-			//System.out.println("From pair: " + closestPair.p1.id + " -- " + closestPair.p2.id);
-			
 			return closestPair;
 		}
 		
 	}
 	
-	private Pair bruteForce(ArrayList<Double> xS, ArrayList<Point> pS){
+	private Pair bruteForce(List<Double> xL2, List<Point> pL2){
 		Pair par = new Pair(new Point(0.0, 0.0), new Point(Double.MAX_VALUE, Double.MAX_VALUE), Double.MAX_VALUE);
 		
-		for(int i=0; i< xS.size(); i++){
-			Point p = pS.get(i);
+		for(int i=0; i< xL2.size(); i++){
+			Point p = pL2.get(i);
 			
-			for(int k=i+1; k< xS.size(); k++){
-				Point pp = pS.get(k);
+			for(int k=i+1; k< xL2.size(); k++){
+				stepNbr++;
+				Point pp = pL2.get(k);
 				if(p.distanceToPoint(pp) < par.p1.distanceToPoint(par.p2)) {
 					par = new Pair(p,pp, p.distanceToPoint(pp));
 				}
@@ -167,6 +148,13 @@ public class closestPair {
 		}
 		
 	}
+	public class YCordComparator implements Comparator<Point> {
+		@Override
+		public int compare(Point p1, Point p2) {
+			return Double.compare(p1.x, p2.x);
+		}
+		
+	}
 	
 	private class Pair {
 		public Point p1;
@@ -180,23 +168,19 @@ public class closestPair {
 		}
 	}
 	
-	public static void main(String[] args) {
-		new closestPair().run();
-	}
-	
-	public void run() {
-		recCount = 0;
-		
+	public closestPair(String arg) {
+		stepNbr=0;
 		long start = System.currentTimeMillis();
-		readFile(new File("src/Labb4/att48-tsp.txt"));
+		readFile(new File("src/Labb4/"+arg+".txt"));
 		mkXList();
 		Pair p = findClosest(xList,pointlist);
+		double distance = p.distance;
 		long end = System.currentTimeMillis();
 		
 		System.out.println("Closest distance = " + p.distance);
 		System.out.println("From pair: " + p.p1.id + " -- " + p.p2.id);
 		
-		System.out.println("The algorithm took " + (end -start) + " ms. The expected complexity was nlogn, with time "+ pointlist.size()*Math.log(pointlist.size())+ " ms");
+		System.out.println("\nThe algorithm had approx. " + stepNbr + " steps.\n\tn^2 steps = " + pointlist.size()*pointlist.size() + "\n\tn*logn steps = " + pointlist.size()*Math.log(pointlist.size())+ "\n\tn(logn)^2 steps = " +pointlist.size()*Math.log(pointlist.size())*Math.log(pointlist.size())+"\n\n");
 		
 	}
 	
