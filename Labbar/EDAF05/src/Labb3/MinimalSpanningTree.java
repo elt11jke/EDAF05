@@ -15,7 +15,7 @@ public class MinimalSpanningTree {
 	private int[] mstSet;
 	private LinkedList<Edge> resSet;
 	private static int distance;
-	private int size;
+	private static int size;
 	private String beginStr;
 	
 	public void readfile(String filename) {
@@ -81,9 +81,12 @@ public class MinimalSpanningTree {
 	public static void main(String[] args) {
 		MinimalSpanningTree su = new MinimalSpanningTree();
 		//su.readfile("src/Labb3/tinyEWG-alpha.txt");
+		long start = System.currentTimeMillis();
 		su.readfile("src/Labb3/USA-highway-miles.txt");
 		su.prim();
+		long end = System.currentTimeMillis();
 		System.out.println(distance);
+		System.out.println("Executed in " + (end - start) + " ms. Expected speed " + size*Math.log(size*size));
 	}
 	
 	public void prim(){

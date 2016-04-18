@@ -80,9 +80,12 @@ public class SpanningUSA {
 	public static void main(String[] args) {
 		SpanningUSA su = new SpanningUSA();
 		//su.readfile("src/Labb3/tinyEWG-alpha.txt");
+		long start = System.currentTimeMillis();
 		su.readfile("src/Labb3/USA-highway-miles.txt");
 		su.prim();
+		long end = System.currentTimeMillis();
 		System.out.println(distance);
+		System.out.println("Executed in " + (end - start) + " ms");
 	}
 	
 	public void prim(){
