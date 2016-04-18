@@ -27,15 +27,16 @@ public class closestPair {
 					double y = Double.parseDouble(splitLine[2]);
 					pointlist.add(new Point(id, x, y));
 				} catch (Exception e) {
-					
+					continue;
 				}
 			}
 
 		}
 	}
 	
+	
 
-	private class Point implements Comparable<Point>, Comparator<Point> {
+	private class Point {
 		public String id;
 		public double x;
 		public double y;
@@ -45,21 +46,9 @@ public class closestPair {
 			this.x = x;
 			this.y = y;
 		}
-
-		public String toString() {
-			return id + " " + x + " " + y;
-		}
-
+		
 		public double distanceToPoint(Point p) {
 			return Math.hypot(x - p.x, y - p.y);
-		}
-
-		public int compareTo(Point q) {
-			return (int) (q.x - this.x);
-		}
-
-		public int compare(Point p, Point q) {
-			return (int) (p.y - q.y);
 		}
 
 	}
